@@ -1,0 +1,55 @@
+2025-04-28T11:31:33.551329+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T12:20:07.680671+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T12:21:25.960281+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T12:24:03.268233+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T12:24:47.757701+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T12:26:08.098819+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T12:46:04.283379+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T12:46:04.538528+0200 Inference error for article_id thi_000004: name 'np' is not defined
+2025-04-28T12:46:04.657103+0200 Inference error for article_id thi_000005: name 'np' is not defined
+2025-04-28T12:46:04.811717+0200 Inference error for article_id thi_000006: name 'np' is not defined
+2025-04-28T12:46:04.953996+0200 Inference error for article_id thi_000007: name 'np' is not defined
+2025-04-28T12:46:05.230906+0200 Inference error for article_id thi_000008: name 'np' is not defined
+2025-04-28T12:46:05.369546+0200 Inference error for article_id thi_000009: name 'np' is not defined
+2025-04-28T12:46:05.640879+0200 Inference error for article_id thi_000010: name 'np' is not defined
+2025-04-28T12:46:05.830321+0200 Inference error for article_id thi_000011: name 'np' is not defined
+2025-04-28T12:46:05.959694+0200 Inference error for article_id thi_000012: name 'np' is not defined
+2025-04-28T12:46:06.125855+0200 Inference error for article_id thi_000013_a: name 'np' is not defined
+2025-04-28T12:46:06.474285+0200 Inference error for article_id thi_000013_b: name 'np' is not defined
+2025-04-28T12:46:06.614919+0200 Inference error for article_id thi_000014: name 'np' is not defined
+2025-04-28T12:46:06.754684+0200 Inference error for article_id thi_000015: name 'np' is not defined
+2025-04-28T12:46:06.901120+0200 Inference error for article_id thi_000016: name 'np' is not defined
+2025-04-28T12:46:07.120438+0200 Inference error for article_id thi_000023: name 'np' is not defined
+2025-04-28T12:46:07.268534+0200 Inference error for article_id thi_000024: name 'np' is not defined
+2025-04-28T12:46:07.562430+0200 Inference error for article_id thi_000025: name 'np' is not defined
+2025-04-28T12:46:07.690696+0200 Inference error for article_id thi_000026: name 'np' is not defined
+2025-04-28T12:46:07.812104+0200 Inference error for article_id thi_000027: name 'np' is not defined
+2025-04-28T12:46:07.930039+0200 Inference error for article_id thi_000028: name 'np' is not defined
+2025-04-28T12:46:08.189056+0200 Inference error for article_id thi_000034: name 'np' is not defined
+2025-04-28T12:46:08.649064+0200 Inference error for article_id thi_000035: name 'np' is not defined
+2025-04-28T12:46:08.796496+0200 Inference error for article_id thi_000036: name 'np' is not defined
+2025-04-28T12:46:09.066486+0200 Inference error for article_id thi_000039_a: name 'np' is not defined
+2025-04-28T12:46:09.381462+0200 Inference error for article_id thi_000039_b: name 'np' is not defined
+2025-04-28T12:46:09.617628+0200 Inference error for article_id thi_000039_c: name 'np' is not defined
+2025-04-28T12:46:09.757997+0200 Inference error for article_id thi_000039_d: name 'np' is not defined
+2025-04-28T12:46:09.905736+0200 Inference error for article_id thi_000039_e: name 'np' is not defined
+2025-04-28T12:46:10.141158+0200 Inference error for article_id thi_000039_f: name 'np' is not defined
+2025-04-28T12:46:10.918163+0200 Inference error for article_id thi_000052: name 'np' is not defined
+2025-04-28T12:46:11.109240+0200 Inference error for article_id thi_000053: name 'np' is not defined
+2025-04-28T12:46:11.250194+0200 Inference error for article_id thi_000054: name 'np' is not defined
+2025-04-28T12:46:11.371173+0200 Inference error for article_id thi_000055: name 'np' is not defined
+2025-04-28T12:46:11.696536+0200 Inference error for article_id thi_000057_a: name 'np' is not defined
+2025-04-28T12:46:11.891843+0200 Inference error for article_id thi_000057_b: name 'np' is not defined
+2025-04-28T12:46:12.144474+0200 Inference error for article_id thi_000058: name 'np' is not defined
+2025-04-28T12:46:12.324960+0200 Inference error for article_id thi_000064: name 'np' is not defined
+2025-04-28T12:46:12.554465+0200 Inference error for article_id thi_000071: name 'np' is not defined
+2025-04-28T12:47:28.732368+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T13:05:35.411559+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T13:07:24.507928+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T13:28:32.464058+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T13:40:30.097173+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T14:13:47.975750+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T14:34:32.228421+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T14:36:51.081947+0200 Saved batch 1 to disk.
+2025-04-28T14:44:28.504774+0200 Hashing prefix: Query:  == 597369d1
+2025-04-28T14:47:46.328571+0200 Hashing prefix: Query:  == 597369d1
