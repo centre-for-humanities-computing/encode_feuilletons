@@ -2,7 +2,7 @@
 - run from the command line:
 
 pip install typer[all] loguru tqdm pandas datasets sentence-transformers
-cd PascaleFrederikkeNikolineFeldkampMoreira#6762/periphery-aviser
+cd PascaleFrederikkeNikolineFeldkampMoreira#6762/feuilleton_novels
 
 # Embeddings
 

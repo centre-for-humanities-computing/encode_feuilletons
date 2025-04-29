@@ -2,6 +2,7 @@ import re
 import hashlib
 from pathlib import Path
 import numpy as np
+import json
 
 import typer
 from loguru import logger
@@ -141,14 +142,13 @@ def main(
     df = pd.read_csv(input_csv, sep="\t")
 
     processed_articles = []
-    chunk_size = 200
 
     for _, row in tqdm(df.iterrows(), total=len(df), desc="Processing articles"):
         article_id = row['article_id']
         text = row['text']
 
         # Debugging: Log article processing status
-        logger.info(f"Processing article_id {article_id}")
+        #logger.info(f"Processing article_id {article_id}")
 
         # Preprocessing: clean and split the text into sentences/chunks
         try:
@@ -170,18 +170,35 @@ def main(
             logger.error(f"Inference error for article_id {article_id}: {e}")
             continue
 
+        # processed_articles.append({
+        #     "article_id": article_id,
+        #     "chunk": chunks,
+        #     "embedding": [emb.tolist() for emb in embeddings]
+        # })
+
         processed_articles.append({
-        "article_id": article_id,
-        "chunk": chunks,
-        "embedding": embeddings
+            "article_id": str(article_id),
+            "chunk": [str(chunk) for chunk in chunks],
+            "embedding": [list(map(float, emb)) for emb in embeddings]
         })
 
+    # # make sure they are the right format before dumping
+    # sanitized_articles = []
+    # for article in processed_articles:
+    #     sanitized_article = {
+    #         "article_id": str(article["article_id"]),
+    #         "chunk": [str(chunk) for chunk in article["chunk"]],
+    #         "embedding": [
+    #             [float(x) for x in embedding] for embedding in article["embedding"]
+    #         ]
+    #     }
+    #     sanitized_articles.append(sanitized_article)
 
 #    # Export processed data as a Hugging Face dataset and save to disk
     dataset = Dataset.from_list(processed_articles)
     dataset.save_to_disk(output_path)
     print(f"Saved processed dataset to {output_path}")
-
+    logger.info(f"Saved processed dataset to {output_path}")
 
 if __name__ == "__main__":
     app()
