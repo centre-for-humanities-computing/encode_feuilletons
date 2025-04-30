@@ -12,10 +12,9 @@ python src/process_articles.py --input-csv cleaned_feuilleton.csv --output-dir d
 # Pooling
 
 - run: 
-python src/pool_embeddings.py --input-ds <path_to_raw_embeddings_directory> --output-ds <path_to_output_directory>
+python src/mean_pooling.py data/raw/emb__intfloat__multilingual-e5-large_597369d1 data/pooled/e-5/
 
-
-python src/mean_pooling.py data/raw/emb__intfloat__multilingual-e5-large_597369d1 data/pooled
+python src/mean_pooling.py data/raw/emb__MiMe-MeMo__MeMo-BERT-03_597369d1 data/pooled/memo/
 
 
 Final embeddings are the pooled version
