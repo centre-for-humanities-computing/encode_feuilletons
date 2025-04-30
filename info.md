@@ -16,5 +16,7 @@ python src/mean_pooling.py data/raw/emb__intfloat__multilingual-e5-large_597369d
 
 python src/mean_pooling.py data/raw/emb__MiMe-MeMo__MeMo-BERT-03_597369d1 data/pooled/memo/
 
+python src/mean_pooling.py data/raw/emb__jinaai__jina-embeddings-v3_597369d1 data/pooled/jina/
+
 
 Final embeddings are the pooled version
