@@ -1,4 +1,4 @@
-# Generating embeddings for the dataset "feuilleton novels"
+## Generating embeddings for the dataset "feuilleton novels"
 
 This script is used to retrieve document embeddings for the feuilleton novels dataset (ca. 1,400 texts)
 
