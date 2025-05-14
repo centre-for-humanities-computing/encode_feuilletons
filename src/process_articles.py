@@ -8,7 +8,7 @@ import typer
 from loguru import logger
 from tqdm import tqdm
 import pandas as pd
-from datasets import Dataset
+from datasets import Dataset, load_dataset
 from sentence_transformers import SentenceTransformer
 
 import pyarrow as pa
@@ -101,14 +101,32 @@ def split_long_sentence(sentence: str, max_tokens: int, model: SentenceTransform
     return parts
 
 
-# models: intfloat/multilingual-e5-large, MiMe-MeMo/MeMo-BERT-03, jinaai/jina-embeddings-v3
+# Function to find the maximum allowed tokens for the model
+def find_max_tokens(tokenizer):
+    """
+    Determines the maximum token length for the tokenizer, ensuring it doesn't exceed a reasonable limit.
+    """
+    max_length = tokenizer.model_max_length
+    if max_length > 9000:  # sometimes, they default to ridiculously high values, so we set a max
+        max_length = 510
+    # if we get an error, we set it to 512
+    try:
+        # Test the tokenizer with a dummy input
+        tokenizer("This is a test sentence.")
+    except Exception as e:
+        logger.error(f"Tokenizer error: {e}")
+        max_length = 510  # fallback to a safe default
+    return max_length
+
+# models: intfloat/multilingual-e5-large, MiMe-MeMo/MeMo-BERT-03, jinaai/jina-embeddings-v3, 
+# Lajavaness/bilingual-embedding-large, OrdalieTech/Solon-embeddings-large-0.1
 
 @app.command()
 def main(
     input_csv: Path = typer.Option(..., help="Path to CSV file with columns 'text' and 'article_id'"),
     output_dir: Path = typer.Option(..., help="Directory where the processed dataset will be saved, should be in embeddings"),
-    model_name: str = typer.Option("jinaai/jina-embeddings-v3", help="SentenceTransformer model name for inference"),
-    max_tokens: int = typer.Option(510, help="Maximum number of tokens per chunk"),
+    model_name: str = typer.Option("OrdalieTech/Solon-embeddings-large-0.1", help="SentenceTransformer model name for inference"),
+    #max_tokens: int = typer.Option(510, help="Maximum number of tokens per chunk"),
     prefix: str = typer.Option('Query: ', help="Optional prefix/instruction to add to each chunk before encoding"),
     prefix_description: str = typer.Option(None, help="Short description of the prefix (used in the output directory name)"),
     
@@ -118,7 +136,12 @@ def main(
     preprocesses and chunks the texts, computes embeddings for each chunk, and saves
     the output dataset to disk.
     """
-    model = SentenceTransformer(model_name)#, trust_remote_code=True, revision="main") # needed for jina
+    model = SentenceTransformer(model_name, trust_remote_code=True) # needed for jina
+
+    # find max_tokens via tokenizer
+    max_tokens = find_max_tokens(model.tokenizer) # will default to 510 if too high
+    print(f"Max tokens for {model_name}: {max_tokens}")
+    logger.info(f"Max tokens for {model_name}: {max_tokens}")
 
     # Build output path based on model name and optional prefix
     mname = model_name.replace("/", "__")
@@ -148,9 +171,6 @@ def main(
     for _, row in tqdm(df.iterrows(), total=len(df), desc="Processing articles"):
         article_id = row['article_id']
         text = row['text']
-
-        # Debugging: Log article processing status
-        #logger.info(f"Processing article_id {article_id}")
 
         # Preprocessing: clean and split the text into sentences/chunks
         try:
