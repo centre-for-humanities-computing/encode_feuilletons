@@ -1,0 +1,27 @@
+2025-09-25T10:29:12.621382+0200 Max tokens for google/embeddinggemma-300m: 2048
+2025-09-25T10:29:12.621933+0200 Hashing prefix: Query:  == 597369d1
+2025-09-25T10:31:43.450665+0200 Saved processed dataset to data/raw/emb__google__embeddinggemma-300m_597369d1
+2025-09-25T10:43:50.115391+0200 Processing model: intfloat/multilingual-e5-large
+2025-09-25T10:44:04.758287+0200 Max tokens for intfloat/multilingual-e5-large: 512
+2025-09-25T10:44:04.758690+0200 Hashing prefix: Query:  == 597369d1
+2025-09-25T10:47:13.519232+0200 Saved processed dataset to data/raw/emb__intfloat__multilingual-e5-large_597369d1
+2025-09-25T10:47:13.523108+0200 Processing model: MiMe-MeMo/MeMo-BERT-03
+2025-09-25T10:47:24.541944+0200 Max tokens for MiMe-MeMo/MeMo-BERT-03: 512
+2025-09-25T10:47:24.542666+0200 Hashing prefix: Query:  == 597369d1
+2025-09-25T10:49:09.915763+0200 Saved processed dataset to data/raw/emb__MiMe-MeMo__MeMo-BERT-03_597369d1
+2025-09-25T10:49:09.919549+0200 Processing model: jinaai/jina-embeddings-v3
+2025-09-25T10:49:28.304184+0200 Max tokens for jinaai/jina-embeddings-v3: 8194
+2025-09-25T10:49:28.304782+0200 Hashing prefix: Query:  == 597369d1
+2025-09-25T10:51:22.630356+0200 Saved processed dataset to data/raw/emb__jinaai__jina-embeddings-v3_597369d1
+2025-09-25T10:51:22.630554+0200 Processing model: JohanHeinsen/Old_News_Segmentation_SBERT_V0.1
+2025-09-25T10:51:31.111063+0200 Max tokens for JohanHeinsen/Old_News_Segmentation_SBERT_V0.1: 512
+2025-09-25T10:51:31.111597+0200 Hashing prefix: Query:  == 597369d1
+2025-09-25T10:53:27.850481+0200 Saved processed dataset to data/raw/emb__JohanHeinsen__Old_News_Segmentation_SBERT_V0.1_597369d1
+2025-09-25T10:53:27.850704+0200 Processing model: BAAI/bge-m3
+2025-09-25T10:53:45.334702+0200 Max tokens for BAAI/bge-m3: 8192
+2025-09-25T10:53:45.335294+0200 Hashing prefix: Query:  == 597369d1
+2025-09-25T10:56:06.243011+0200 Saved processed dataset to data/raw/emb__BAAI__bge-m3_597369d1
+2025-09-25T10:56:06.243155+0200 Processing model: google/embeddinggemma-300m
+2025-09-25T10:56:11.497697+0200 Max tokens for google/embeddinggemma-300m: 2048
+2025-09-25T10:56:11.498234+0200 Hashing prefix: Query:  == 597369d1
+2025-09-25T10:58:25.899135+0200 Saved processed dataset to data/raw/emb__google__embeddinggemma-300m_597369d1

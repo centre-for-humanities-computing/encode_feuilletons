@@ -123,7 +123,7 @@ def find_max_tokens(tokenizer):
 def main(
     input_csv: Path = typer.Option(..., help="Path to CSV file with columns 'text' and 'article_id'"),
     output_dir: Path = typer.Option(..., help="Directory where the processed dataset will be saved, should be in embeddings"),
-    model_name: str = typer.Option(..., help="SentenceTransformer model name for inference"),
+    model_name: str = typer.Option(..., help="Comma-separated model names"),
     prefix: str = typer.Option('Query: ', help="Optional prefix/instruction to add to each chunk before encoding"),
     prefix_description: str = typer.Option(None, help="Short description of the prefix (used in the output directory name)"),
 ):
@@ -132,91 +132,92 @@ def main(
     preprocesses and chunks the texts, computes embeddings for each chunk, and saves
     the output dataset to disk.
     """
-    model = SentenceTransformer(model_name, trust_remote_code=True) # needed for jina
+    models = [m.strip() for m in model_name.split(",")]
+    
+    for model_name_i in models:
+        logger.info(f"Processing model: {model_name_i}")
 
-    # find max_tokens via tokenizer
-    max_tokens = find_max_tokens(model.tokenizer) # will default to 510 if too high
-    print(f"Max tokens for {model_name}: {max_tokens}")
-    logger.info(f"Max tokens for {model_name}: {max_tokens}")
+        # Load model
+        model = SentenceTransformer(model_name_i, trust_remote_code=True)
 
-    # Build output path based on model name and optional prefix
-    mname = model_name.replace("/", "__")
-    if prefix:
-        if prefix_description:
-            output_path = output_dir / f"emb__{mname}_{prefix_description}"
+        # find max_tokens via tokenizer
+        max_tokens = find_max_tokens(model.tokenizer)
+        print(f"Max tokens for {model_name_i}: {max_tokens}")
+        logger.info(f"Max tokens for {model_name_i}: {max_tokens}")
+
+        # Build output path
+        mname = model_name_i.replace("/", "__")
+        if prefix:
+            if prefix_description:
+                output_path = output_dir / f"emb__{mname}_{prefix_description}"
+            else:
+                prefix_hash = hash_prompt(prefix)
+                output_path = output_dir / f"emb__{mname}_{prefix_hash}"
+                logger.info(f"Hashing prefix: {prefix} == {prefix_hash}")
         else:
-            prefix_hash = hash_prompt(prefix)
-            output_path = output_dir / f"emb__{mname}_{prefix_hash}"
-            logger.info(f"Hashing prefix: {prefix} == {prefix_hash}")
-    else:
-        output_path = output_dir / f"emb__{mname}"
+            output_path = output_dir / f"emb__{mname}"
 
-    # Ensure the output directory exists
-    output_path.mkdir(parents=True, exist_ok=True)
+        output_path.mkdir(parents=True, exist_ok=True)
 
-    # Check if input file exists
-    if not input_csv.exists():
-        logger.error(f"Input file not found: {input_csv}")
-        raise FileNotFoundError(f"Input file not found: {input_csv}")
+        # Read CSV
+        df = pd.read_csv(input_csv, sep="\t")
 
-    # Read CSV into DataFrame
-    df = pd.read_csv(input_csv, sep="\t")
+        processed_articles = []
 
-    processed_articles = []
+        for _, row in tqdm(df.iterrows(), total=len(df), desc=f"Processing articles for {mname}"):
 
-    for _, row in tqdm(df.iterrows(), total=len(df), desc="Processing articles"):
-        article_id = row['article_id']
-        text = row['text']
+            article_id = row['article_id']
+            text = row['text']
 
-        # Preprocessing: clean and split the text into sentences/chunks
-        try:
-            text_clean = clean_whitespace(text)
-            sentences = simple_sentencize(text_clean)
-            chunks = chunk_sentences(sentences, max_tokens=max_tokens, model=model)
-        except Exception as e:
-            logger.error(f"Preprocessing error for article_id {article_id}: {e}")
-            continue
+            # Preprocessing: clean and split the text into sentences/chunks
+            try:
+                text_clean = clean_whitespace(text)
+                sentences = simple_sentencize(text_clean)
+                chunks = chunk_sentences(sentences, max_tokens=max_tokens, model=model)
+            except Exception as e:
+                logger.error(f"Preprocessing error for article_id {article_id}: {e}")
+                continue
 
-        # Inference: compute embeddings for each chunk
-        try:
-            embeddings = []
-            for chunk in chunks:
-                chunk_input = f"{prefix} {chunk}" if prefix else chunk
-                emb = model.encode(chunk_input)
-                embeddings.append(emb)
-        except Exception as e:
-            logger.error(f"Inference error for article_id {article_id}: {e}")
-            continue
+            # Inference: compute embeddings for each chunk
+            try:
+                embeddings = []
+                for chunk in chunks:
+                    chunk_input = f"{prefix} {chunk}" if prefix else chunk
+                    emb = model.encode(chunk_input)
+                    embeddings.append(emb)
+            except Exception as e:
+                logger.error(f"Inference error for article_id {article_id}: {e}")
+                continue
 
-        # processed_articles.append({
-        #     "article_id": article_id,
-        #     "chunk": chunks,
-        #     "embedding": [emb.tolist() for emb in embeddings]
-        # })
+            # processed_articles.append({
+            #     "article_id": article_id,
+            #     "chunk": chunks,
+            #     "embedding": [emb.tolist() for emb in embeddings]
+            # })
 
-        processed_articles.append({
-            "article_id": str(article_id),
-            "chunk": [str(chunk) for chunk in chunks],
-            "embedding": [list(map(float, emb)) for emb in embeddings]
-        })
+            processed_articles.append({
+                "article_id": str(article_id),
+                "chunk": [str(chunk) for chunk in chunks],
+                "embedding": [emb.tolist() for emb in embeddings]
+            })
 
-    # # make sure they are the right format before dumping
-    # sanitized_articles = []
-    # for article in processed_articles:
-    #     sanitized_article = {
-    #         "article_id": str(article["article_id"]),
-    #         "chunk": [str(chunk) for chunk in article["chunk"]],
-    #         "embedding": [
-    #             [float(x) for x in embedding] for embedding in article["embedding"]
-    #         ]
-    #     }
-    #     sanitized_articles.append(sanitized_article)
+        # # make sure they are the right format before dumping
+        # sanitized_articles = []
+        # for article in processed_articles:
+        #     sanitized_article = {
+        #         "article_id": str(article["article_id"]),
+        #         "chunk": [str(chunk) for chunk in article["chunk"]],
+        #         "embedding": [
+        #             [float(x) for x in embedding] for embedding in article["embedding"]
+        #         ]
+        #     }
+        #     sanitized_articles.append(sanitized_article)
 
-#    # Export processed data as a Hugging Face dataset and save to disk
-    dataset = Dataset.from_list(processed_articles)
-    dataset.save_to_disk(output_path)
-    print(f"Saved processed dataset to {output_path}")
-    logger.info(f"Saved processed dataset to {output_path}")
+    #    # Export processed data as a Hugging Face dataset and save to disk
+        dataset = Dataset.from_list(processed_articles)
+        dataset.save_to_disk(output_path)
+        print(f"Saved processed dataset to {output_path}")
+        logger.info(f"Saved processed dataset to {output_path}")
 
 if __name__ == "__main__":
     app()
